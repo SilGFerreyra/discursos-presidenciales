@@ -1,0 +1,180 @@
+{
+  "schema_version": 2,
+  "status": "complete",
+  "compatibility_config": {
+    "pipeline_schema_version": 2,
+    "input_sha256": "6bdd12428df44ffcff9397edeb53833953f79570c8186e77da6cdeed42612365",
+    "source_rows": 87546,
+    "rows": 87546,
+    "model_id": "BAAI/bge-m3",
+    "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+    "embedding_dimension": 1024,
+    "pooling": "CLS (last_hidden_state[:, 0, :])",
+    "normalization": "L2 explícita después de medir la norma cruda",
+    "prefixes": "ninguno",
+    "max_length": 8192,
+    "precision": "fp16",
+    "shard_size": 1024,
+    "official_pooling_config": {
+      "word_embedding_dimension": 1024,
+      "pooling_mode_cls_token": true,
+      "pooling_mode_mean_tokens": false,
+      "pooling_mode_max_tokens": false,
+      "pooling_mode_mean_sqrt_len_tokens": false
+    }
+  },
+  "compatibility_fingerprint": "b4c820d8f97120e896445aa61b82833490c27f35158f2d140e6880ddbaf0e7fe",
+  "execution_history": [
+    {
+      "input_file": "df-chunks-2026-09-10.csv",
+      "requested_batch_size": 32,
+      "runtime": {
+        "device_type": "cuda",
+        "hardware": {
+          "device": "cuda",
+          "gpu_name": "Tesla T4",
+          "compute_capability": [
+            7,
+            5
+          ],
+          "cuda_version": "12.8",
+          "cudnn_version": 91900
+        },
+        "python_version": "3.13.15",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "4.57.6",
+        "script_sha256": "cd3b4e935dc42481d9a24f80d55a8d4d7caa38dff9147ad33356ff8e0c583436"
+      },
+      "started_at_utc": "2026-09-13T17:34:58.333814+00:00"
+    },
+    {
+      "input_file": "df-chunks-2026-09-10.csv",
+      "requested_batch_size": 32,
+      "runtime": {
+        "device_type": "cuda",
+        "hardware": {
+          "device": "cuda",
+          "gpu_name": "Tesla T4",
+          "compute_capability": [
+            7,
+            5
+          ],
+          "cuda_version": "12.8",
+          "cudnn_version": 91900
+        },
+        "python_version": "3.13.15",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "4.57.6",
+        "script_sha256": "cd3b4e935dc42481d9a24f80d55a8d4d7caa38dff9147ad33356ff8e0c583436"
+      },
+      "started_at_utc": "2026-09-13T18:22:35.651077+00:00"
+    },
+    {
+      "input_file": "df-chunks-2026-09-10.csv",
+      "requested_batch_size": 32,
+      "runtime": {
+        "device_type": "cuda",
+        "hardware": {
+          "device": "cuda",
+          "gpu_name": "Tesla T4",
+          "compute_capability": [
+            7,
+            5
+          ],
+          "cuda_version": "12.8",
+          "cudnn_version": 91900
+        },
+        "python_version": "3.13.15",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "4.57.6",
+        "script_sha256": "cd3b4e935dc42481d9a24f80d55a8d4d7caa38dff9147ad33356ff8e0c583436"
+      },
+      "started_at_utc": "2026-09-13T18:24:38.525875+00:00"
+    },
+    {
+      "input_file": "df-chunks-2026-09-10.csv",
+      "requested_batch_size": 32,
+      "runtime": {
+        "device_type": "cuda",
+        "hardware": {
+          "device": "cuda",
+          "gpu_name": "Tesla T4",
+          "compute_capability": [
+            7,
+            5
+          ],
+          "cuda_version": "12.8",
+          "cudnn_version": 91900
+        },
+        "python_version": "3.13.15",
+        "torch_version": "2.11.0+cu128",
+        "transformers_version": "4.57.6",
+        "script_sha256": "cd3b4e935dc42481d9a24f80d55a8d4d7caa38dff9147ad33356ff8e0c583436"
+      },
+      "started_at_utc": "2026-09-13T21:54:50.567155+00:00"
+    }
+  ],
+  "created_at_utc": "2026-09-13T17:34:58.333751+00:00",
+  "artifact_checksums_sha256": {
+    "embeddings-chunks-bge-m3.npy": "150661b0a277dfd1d31e546449e4bd3d65e6e5134763d17feb751de231cd690c",
+    "df-chunks-emb-metadata-2026-09-10.csv": "466e096eaf9d840a9de6d6053332818e9cdb30a3bff20305fab3e90173f1655a",
+    "df-chunks-emb-2026-09-10.parquet": "81080d5a0bbe96c5c6800987f3875cce25a511ffe3a4d0b19ca5f8c0e6210592"
+  },
+  "shard_provenance": {
+    "mixed_runtimes": false,
+    "unique_runtime_count": 1,
+    "runtimes": [
+      {
+        "runtime_fingerprint": "b31ffcaec514be9e3e442a1b4a515e7763c318ac35f2b32d9153765e45b69340",
+        "runtime": {
+          "device_type": "cuda",
+          "hardware": {
+            "compute_capability": [
+              7,
+              5
+            ],
+            "cuda_version": "12.8",
+            "cudnn_version": 91900,
+            "device": "cuda",
+            "gpu_name": "Tesla T4"
+          },
+          "python_version": "3.13.15",
+          "script_sha256": "cd3b4e935dc42481d9a24f80d55a8d4d7caa38dff9147ad33356ff8e0c583436",
+          "torch_version": "2.11.0+cu128",
+          "transformers_version": "4.57.6"
+        },
+        "shard_count": 86
+      }
+    ],
+    "generation_profiles": [
+      {
+        "generation_fingerprint": "e5573dd1052c0e85537193e995c713a29d94b09155f9d05f035f58558b9b78e6",
+        "provenance": {
+          "effective_batch_size": 32,
+          "input_file": "df-chunks-2026-09-10.csv",
+          "requested_batch_size": 32,
+          "runtime": {
+            "device_type": "cuda",
+            "hardware": {
+              "compute_capability": [
+                7,
+                5
+              ],
+              "cuda_version": "12.8",
+              "cudnn_version": 91900,
+              "device": "cuda",
+              "gpu_name": "Tesla T4"
+            },
+            "python_version": "3.13.15",
+            "script_sha256": "cd3b4e935dc42481d9a24f80d55a8d4d7caa38dff9147ad33356ff8e0c583436",
+            "torch_version": "2.11.0+cu128",
+            "transformers_version": "4.57.6"
+          }
+        },
+        "shard_count": 86
+      }
+    ]
+  },
+  "completed_at_utc": "2026-09-13T21:57:41.710462+00:00",
+  "report": "reporte-embeddings-bge-m3.json"
+}

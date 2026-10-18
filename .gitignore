@@ -1,0 +1,20 @@
+# Entornos y cachés locales (modelos de HuggingFace, temporales, evidencias)
+.venv/
+**/.venv/
+.cache/
+**/.cache/
+__pycache__/
+*.pyc
+.atl/
+
+# Ruta personal del entorno (cada usuario usa app_reranker\.venv por defecto)
+app_reranker/venv-path.txt
+
+# Auditorías locales grandes
+app_reranker/inventory-*.json
+
+# Artefactos grandes: la matriz se distribuye como adjunto de la Release
+salida-embeddings-bge-m3/*.npy
+salida-embeddings-bge-m3/*.parquet
+salida-embeddings-bge-m3/shards/
+salida-embeddings-bge-m3/salida-embeddings-bge-m3-prueba/

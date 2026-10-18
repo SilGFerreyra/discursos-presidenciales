@@ -1,0 +1,8 @@
+# Los datos se validan por SHA256: Git no debe convertir finales de línea.
+*.csv  -text
+*.npy  binary
+*.npz  binary
+*.parquet binary
+salida-embeddings-bge-m3/** -text
+# Scripts por lotes de Windows con CRLF
+*.bat text eol=crlf

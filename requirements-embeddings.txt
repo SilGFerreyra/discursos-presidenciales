@@ -1,0 +1,8 @@
+# Google Colab already provides a CUDA-compatible PyTorch. Do not reinstall it
+# blindly; this pipeline checks that the installed version is >=2.6.
+transformers==4.57.6
+huggingface-hub==0.36.2
+numpy>=2.0,<3
+pandas>=2.2,<3
+pyarrow>=17,<24
+tqdm>=4.66,<5

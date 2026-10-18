@@ -1,0 +1,203 @@
+{
+  "total_documentos": 297,
+  "total_chunks": 87546,
+  "resumen_n_palabras": {
+    "minimo": 40,
+    "p25": 51.0,
+    "mediana": 55.0,
+    "media": 55.25,
+    "p75": 60.0,
+    "maximo": 70
+  },
+  "distribucion_n_palabras": {
+    "<40": 0,
+    "40-44": 3889,
+    "45-49": 13255,
+    "50-54": 19724,
+    "55-59": 28623,
+    "60-64": 14343,
+    "65-70": 7712,
+    ">70": 0
+  },
+  "chunks_fuera_de_40_70": 0,
+  "distribucion_overlap_previo": {
+    "5": 2064,
+    "6": 2900,
+    "7": 3870,
+    "8": 69213,
+    "9": 4798,
+    "10": 4404
+  },
+  "overlap_promedio": 7.97,
+  "palabras_duplicadas_por_overlap": 695736,
+  "transiciones_con_overlap_fuera_de_5_10": 0,
+  "inicios_overlap_semanticos": 22887,
+  "inicios_overlap_forzados_por_palabra": 64362,
+  "metodos_inicio_overlap": {
+    "palabra": 64362,
+    "enumeracion": 16177,
+    "oracion": 4514,
+    "punto_y_coma": 899,
+    "conjuncion": 628,
+    "dos_puntos": 537,
+    "conector": 132
+  },
+  "metodos_de_corte": {
+    "oracion": 60879,
+    "enumeracion": 14883,
+    "palabra": 6710,
+    "punto_y_coma": 3332,
+    "dos_puntos": 925,
+    "conjuncion": 469,
+    "conector": 348
+  },
+  "chunk_flags": {
+    "ok": 80836,
+    "forzado": 6710
+  },
+  "ejemplos_cortes_forzados": [
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 5,
+      "n_palabras": 55,
+      "texto_chunk": "había puesto a nuestra disposición el Gobierno del Perú. El pago se ha hecho íntegramente, recibiéndose poco después el descuento con que se hizo la primera entrega. Mucha parte ha tenido en este resultado el activo celo de nuestro Encargado de Negocios. Vivamente interesado en el restablecimiento de las relaciones amistosas entre el Perú y"
+    },
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 7,
+      "n_palabras": 55,
+      "texto_chunk": "si imponen al mediador mayor tarea, le permiten, sin embargo, desempeñar sus buenos oficios de amigo común con esperanzas de éxito, y obrar en favor de la paz, el mayor bien para los estados americanos. Desgraciadamente los acontecimientos que han turbado la tranquilidad interior del Perú y algunos sucesos internos de Bolivia, han venido a"
+    },
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 11,
+      "n_palabras": 55,
+      "texto_chunk": "recientes en que no pudieron ponerse de acuerdo. No eran las cuestiones que debía fallar el arbitro tan ajenas a intereses chilenos para aceptar esa confianza honrosa sin probar otros medios de darles solución: pero no conviniendo los Gobiernos ecuatoriano y peruano en las indicaciones del de Chile, e insistiendo en el arbitraje, me decidí"
+    },
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 18,
+      "n_palabras": 55,
+      "texto_chunk": "ciudadanos y promete un halagüeño y brillante porvenir. La consolidación del orden es la fuente fecunda de esos bienes y a ella he consagrado mui particularmente mis esfuerzos. Cediendo a mis sentimientos y convicciones he seguido hasta aquí y seguiré relegando al olvido los estravíos pasados, y lamento que espíritus obsesados alejen la oportunidad de"
+    },
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 49,
+      "n_palabras": 55,
+      "texto_chunk": "en breve providencias que antes hubieran sido ineficaces. Se ha dado principio al nuevo hospital de mujeres en esta capital, conforme a un plano en que se consultan las exigencias higiénicas de un establecimiento de esta clase y la comodidad del servicio. En Cauquenes se ha concluido con auxilios fiscales el hospital que allí se"
+    },
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 63,
+      "n_palabras": 55,
+      "texto_chunk": "y código de comercio puedan presentar sus proyectos. Trabajos de esta naturaleza por urjentes que sean, es necesario ante todo que se hagan con detención y maduro examen. La legislación de minas ha sido objeto de estudios y trabajos anteriores; pero antes de llamar vuestra atención a ellos, he creído conveniente someterlos al examen de"
+    },
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 79,
+      "n_palabras": 55,
+      "texto_chunk": "del ministerio, con la decente mantención del párroco. Pronto os pasaré un proyecto de lei que perfeccionado por vuestras luces, satisfará una de las más premiosas exigencias del país. En el entretanto se ha atendido a las necesidades en este ramo con la creación de algunas viceparroquias, con la asignación de sínodos a párrocos incongruos"
+    },
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 100,
+      "n_palabras": 55,
+      "texto_chunk": "científicos con que la Universidad está en relación. El museo de historia natural, bajo la dirección de un hábil naturalista, se enriquece con nuevos objetos y con la importancia que dá a muchos que ya se poseían, un trabajo activo e inteligente. Los resultados ventajosos que ha dado el Conservatorio de música en la enseñanza"
+    },
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 102,
+      "n_palabras": 55,
+      "texto_chunk": "indiferencia, el que se interesa en esta institución: varios son los alumnos del conservatorio que han encontrado en su aprendizaje medios honrosos de mejorar su condición. Las rentas públicas en han ascendido a , pesos. Las entradas de aduanas recibieron en un aumento extraordinario sobre a consecuencia de la alza de derechos que la nueva"
+    },
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 105,
+      "n_palabras": 55,
+      "texto_chunk": "declarado libre de derechos la internación de animales. Esta medida era aconsejada por consideraciones de gran peso para que debiera detenerme en adoptarla, la pérdida de la entrada que este ramo produce al erario. También he creído del caso dirijirme al Gobierno argentino participándole esta franquicia concedida al comercio de aquella República e invitándole a"
+    }
+  ],
+  "ejemplos_overlap_semantico": [
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 3,
+      "overlap_previo": 5,
+      "metodo_inicio_overlap": "enumeracion",
+      "texto_overlap": "como debía esperarse, alguna paralización."
+    },
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 5,
+      "overlap_previo": 9,
+      "metodo_inicio_overlap": "enumeracion",
+      "texto_overlap": "había puesto a nuestra disposición el Gobierno del Perú."
+    },
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 7,
+      "overlap_previo": 8,
+      "metodo_inicio_overlap": "enumeracion",
+      "texto_overlap": "si imponen al mediador mayor tarea, le permiten,"
+    },
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 13,
+      "overlap_previo": 9,
+      "metodo_inicio_overlap": "enumeracion",
+      "texto_overlap": "no ha sido aceptado hasta ahora por aquel Gobierno,"
+    },
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 20,
+      "overlap_previo": 7,
+      "metodo_inicio_overlap": "enumeracion",
+      "texto_overlap": "en sus adelantos en todos los ramos,"
+    },
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 21,
+      "overlap_previo": 8,
+      "metodo_inicio_overlap": "enumeracion",
+      "texto_overlap": "necesario es que cedan los sentimientos de benevolencia."
+    },
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 27,
+      "overlap_previo": 9,
+      "metodo_inicio_overlap": "enumeracion",
+      "texto_overlap": "e introducido otras mejoras menos importantes en el servicio."
+    },
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 29,
+      "overlap_previo": 9,
+      "metodo_inicio_overlap": "enumeracion",
+      "texto_overlap": "el del Alto del Puerto por un nuevo rumbo."
+    },
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 32,
+      "overlap_previo": 10,
+      "metodo_inicio_overlap": "punto_y_coma",
+      "texto_overlap": "se ha concluido con auxilios fiscales el del río Cauquenes;"
+    },
+    {
+      "doc_id": "18540601.pdf",
+      "chunk_id": 34,
+      "overlap_previo": 10,
+      "metodo_inicio_overlap": "enumeracion",
+      "texto_overlap": "y la que ha ofrecido mas dificultades, esté completamente concluida."
+    }
+  ],
+  "validacion": {
+    "documentos_con_contenido_alterado": 0,
+    "chunks_que_no_coinciden_con_fuente": 0,
+    "chunks_con_posiciones_invalidas": 0,
+    "transiciones_con_overlap_invalido": 0,
+    "transiciones_con_huecos": 0,
+    "documentos_con_chunk_id_invalido": 0,
+    "chunks_menores_a_40": 0,
+    "chunks_mayores_a_70": 0
+  },
+  "posiciones_de_palabra": "1-based e inclusivas; los intervalos se solapan intencionalmente"
+}
