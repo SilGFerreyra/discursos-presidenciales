@@ -21,7 +21,7 @@ desde la carpeta padre, así que **hay que conservar esta estructura de carpetas
 
 ## Instalación (Windows)
 
-Requisitos: Python **3.12** de 64 bits, ~6 GB libres (modelos) y ~4 GB de RAM.
+Requisitos: [Git](https://git-scm.com/download/win), Python **3.12** de 64 bits, ~6 GB libres (modelos) y ~4 GB de RAM.
 
 ### 1. Clonar y descargar la matriz de embeddings
 
@@ -32,10 +32,16 @@ cd discursos-presidenciales
 
 Descargue `embeddings-chunks-bge-m3.npy` de la Release
 [`datos-v1`](https://github.com/SilGFerreyra/discursos-presidenciales/releases/tag/datos-v1)
-y guárdelo en `salida-embeddings-bge-m3\`. Con GitHub CLI:
+y guárdelo en `salida-embeddings-bge-m3\`. Desde PowerShell, en la raíz del repositorio:
 
 ```powershell
-gh release download datos-v1 -R SilGFerreyra/discursos-presidenciales -D salida-embeddings-bge-m3
+Invoke-WebRequest -Uri https://github.com/SilGFerreyra/discursos-presidenciales/releases/download/datos-v1/embeddings-chunks-bge-m3.npy -OutFile salida-embeddings-bge-m3\embeddings-chunks-bge-m3.npy
+```
+
+En Linux/macOS:
+
+```bash
+curl -L -o salida-embeddings-bge-m3/embeddings-chunks-bge-m3.npy https://github.com/SilGFerreyra/discursos-presidenciales/releases/download/datos-v1/embeddings-chunks-bge-m3.npy
 ```
 
 Luego verifique los datos:
