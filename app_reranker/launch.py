@@ -2,6 +2,7 @@
 import socket
 import argparse
 import json
+import os
 import site
 import subprocess
 import sys
@@ -12,7 +13,8 @@ from runtime import APP_ROOT, configure_runtime, get_venv_root
 
 def validate_interpreter():
     root = get_venv_root()
-    expected = root / "Scripts/python.exe"
+    # Windows: Scripts/python.exe; Linux/macOS: bin/python (same isolation checks).
+    expected = root / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
     if (Path(sys.executable).resolve() != expected.resolve() or sys.version_info[:2] != (3, 12)
             or Path(sys.prefix).resolve() != root.resolve() or sys.prefix == sys.base_prefix
             or site.ENABLE_USER_SITE is not False):
