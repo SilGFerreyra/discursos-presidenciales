@@ -13,6 +13,10 @@ app_reranker/venv-path.txt
 # Auditorías locales grandes
 app_reranker/inventory-*.json
 
+# Reportes generados de instalación y auditoría de paquetes locales
+app_reranker/local-wheel-staging.json
+app_reranker/wheel-audit.json
+
 # Artefactos grandes: la matriz se distribuye como adjunto de la Release
 salida-embeddings-bge-m3/*.npy
 salida-embeddings-bge-m3/*.parquet
