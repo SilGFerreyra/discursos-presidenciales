@@ -1,7 +1,0 @@
-{
-  "checked_hashes": 27,
-  "unchanged": true,
-  "changes": {},
-  "baseline_sha256": "9c79e1c9bacf6e563536f95f3dbb953f18b468f849be6180f12bb0330c519236",
-  "scope": "Targeted source/config SHA256+size/mtime only; no full-tree traversal or all-byte proof"
-}

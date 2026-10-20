@@ -11,7 +11,7 @@ from unittest.mock import Mock, patch
 
 from runtime import APP_ROOT, configure_runtime
 configure_runtime()
-import verify_real_runtime as verify
+import download_models as verify
 
 
 class OfficialPolicyConstantsTests(unittest.TestCase):
@@ -32,7 +32,6 @@ class VerificationHelperTests(unittest.TestCase):
         bin_payload = b"synthetic embedding weight; NEVER a real model"
         # Replace only size/SHA expectations in mocks; keep real repo/revision policy gates.
         self.patches = [patch.object(verify, "APP_ROOT", self.root),
-                        patch.object(verify, "EVIDENCE", self.root / "evidence"),
                         # File-policy tests fake Hub completely. Network bootstrap is tested in fresh processes.
                         patch.object(verify, "configure_runtime", wraps=lambda **kwargs: configure_runtime()),
                         patch.object(verify, "BGE_WEIGHT_BYTES", len(bin_payload)),
@@ -82,16 +81,12 @@ class VerificationHelperTests(unittest.TestCase):
         return str(path)
 
     def test_provisions_exact_official_bin_and_only_safetensors_for_reranker(self):
-        verify.provision()
-        report = json.loads((self.root / "evidence/provisioning.json").read_text())
-        self.assertTrue(report["both_models_provisioned"])
+        report = verify.provision()
         self.assertEqual(report["status"], "complete")
         self.assertEqual(self.download.call_count, 12)
-        for entry, expected_format in zip(report["models"], ("pytorch_bin", "safetensors")):
-            self.assertEqual(entry["weight_format"], expected_format)
-            self.assertTrue(entry["weight_sha256_verified"])
-            self.assertEqual(entry["pinned_revision"], entry["revision"])
-            self.assertFalse(entry["load_policy"]["trust_remote_code"])
+        self.assertEqual(len(report["models"]), 2)
+        for entry in report["models"]:
+            self.assertTrue(all(item["sha256_verified"] for item in entry["files"]))
         for call in self.download.call_args_list:
             repo, name = call.args
             expected_revision = verify.BGE_REVISION if repo == verify.BGE_MODEL_ID else verify.RERANK_REVISION
@@ -99,8 +94,6 @@ class VerificationHelperTests(unittest.TestCase):
             self.assertTrue(Path(call.kwargs["cache_dir"]).is_relative_to(self.root))
             if name.endswith(".bin"):
                 self.assertEqual((repo, name), (verify.BGE_MODEL_ID, verify.BGE_WEIGHT_NAME))
-        self.assertTrue(report["safetensors_conversion_disabled"])
-        self.assertFalse(report["weights_converted"])
         self.assertEqual(os.environ["DISABLE_SAFETENSORS_CONVERSION"], "true")
         verify.configure_runtime.assert_called_with(offline=False)
 
@@ -149,57 +142,22 @@ class VerificationHelperTests(unittest.TestCase):
         with patch.object(Path, "is_symlink", return_value=True), self.assertRaises(ValueError):
             verify.owned_cache()
 
-    def test_local_load_verifies_file_and_uses_unchanged_canonical_helper_offline(self):
-        self.seed_snapshot()
-        canonical = Mock(return_value=("tokenizer", "model"))
-        with patch.dict(sys.modules, {
-                "search_logic": SimpleNamespace(MODEL_ID=verify.BGE_MODEL_ID, MODEL_REVISION=verify.BGE_REVISION),
-                "generar_embeddings_bge_m3_colab": SimpleNamespace(load_model=canonical)}):
-            tokenizer, model, provenance = verify.load_verified_embedding_model("cpu", "fp32", 8192)
-        canonical.assert_called_once_with("cpu", "fp32", 8192, local_files_only=True)
-        self.assertEqual((tokenizer, model), ("tokenizer", "model"))
-        self.assertTrue(self.download.call_args.kwargs["local_files_only"])
-        self.factory.assert_not_called()
-        self.assertTrue(provenance["sha256_verified"])
-        self.assertEqual(provenance["format"], "pytorch_bin")
-        self.assertFalse(provenance["trust_remote_code"])
-        self.assertTrue(provenance["weights_only"])
-        self.assertEqual(os.environ["DISABLE_SAFETENSORS_CONVERSION"], "true")
-
-    def test_wrong_local_size_or_hash_prevents_model_load(self):
+    def test_wrong_downloaded_size_or_hash_is_rejected(self):
         snapshot = self.seed_snapshot()
         weight = snapshot / verify.BGE_WEIGHT_NAME
         valid = weight.read_bytes()
         for data in (b"wrong-size", b"X" * len(valid)):
             with self.subTest(data=data):
                 weight.write_bytes(data)
-                with patch.object(verify, "_canonical_embedding_load") as loader:
-                    with self.assertRaises(ValueError):
-                        verify.load_verified_embedding_model("cpu", "fp32", 8192)
-                    loader.assert_not_called()
-
-    def test_converted_embedding_weights_prevent_model_load(self):
-        snapshot = self.seed_snapshot()
-        (snapshot / "model.safetensors").write_bytes(b"forbidden conversion")
-        with patch.object(verify, "_canonical_embedding_load") as loader, self.assertRaises(ValueError):
-            verify.load_verified_embedding_model("cpu", "fp32", 8192)
-        loader.assert_not_called()
+                with self.assertRaises(ValueError):
+                    verify.file_integrity(weight, len(valid), hashlib.sha256(valid).hexdigest())
 
     def test_remote_code_configuration_prevents_model_load(self):
         snapshot = self.seed_snapshot()
         path = snapshot / "tokenizer_config.json"
         path.write_text(json.dumps({"tokenizer_class": "XLMRobertaTokenizer", "auto_map": {"AutoTokenizer": "remote.Code"}}))
-        with patch.object(verify, "_canonical_embedding_load") as loader, self.assertRaises(ValueError):
-            verify.load_verified_embedding_model("cpu", "fp32", 8192)
-        loader.assert_not_called()
-
-    def test_canonical_helper_identity_mismatch_prevents_loading(self):
-        canonical = Mock()
-        with patch.dict(sys.modules, {"search_logic": SimpleNamespace(MODEL_ID="other/model", MODEL_REVISION=verify.BGE_REVISION),
-                                     "generar_embeddings_bge_m3_colab": SimpleNamespace(load_model=canonical)}):
-            with self.assertRaises(ValueError):
-                verify._canonical_embedding_load("cpu", "fp32", 8192)
-        canonical.assert_not_called()
+        with self.assertRaises(ValueError):
+            verify.validate_builtin_configuration(snapshot, verify.BGE_MODEL_ID)
 
 
 if __name__ == "__main__":

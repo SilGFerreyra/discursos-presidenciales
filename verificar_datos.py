@@ -1,4 +1,4 @@
-"""Verifica que el corpus y la matriz de embeddings coincidan con sus SHA256 esperados.
+"""Verifica los SHA256 de los metadatos y la matriz utilizados por la app.
 
 Uso (desde la raíz del repositorio):  python verificar_datos.py
 """
@@ -9,8 +9,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "salida-embeddings-bge-m3"
-CORPUS = ROOT / "df-chunks-2026-09-10.csv"
-CORPUS_SHA256 = "6bdd12428df44ffcff9397edeb53833953f79570c8186e77da6cdeed42612365"
 
 
 def sha256(path):
@@ -23,7 +21,7 @@ def sha256(path):
 
 def main():
     manifest = json.loads((OUT / "manifest-embeddings-bge-m3.json").read_text(encoding="utf-8"))
-    expected = {CORPUS: CORPUS_SHA256}
+    expected = {}
     for name in ("embeddings-chunks-bge-m3.npy", "df-chunks-emb-metadata-2026-09-10.csv"):
         expected[OUT / name] = manifest["artifact_checksums_sha256"][name]
     ok = True

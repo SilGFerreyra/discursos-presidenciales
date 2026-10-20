@@ -7,18 +7,5 @@ __pycache__/
 *.pyc
 .atl/
 
-# Ruta personal del entorno (cada usuario usa app_reranker\.venv por defecto)
-app_reranker/venv-path.txt
-
-# Auditorías locales grandes
-app_reranker/inventory-*.json
-
-# Reportes generados de instalación y auditoría de paquetes locales
-app_reranker/local-wheel-staging.json
-app_reranker/wheel-audit.json
-
 # Artefactos grandes: la matriz se distribuye como adjunto de la Release
 salida-embeddings-bge-m3/*.npy
-salida-embeddings-bge-m3/*.parquet
-salida-embeddings-bge-m3/shards/
-salida-embeddings-bge-m3/salida-embeddings-bge-m3-prueba/

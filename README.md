@@ -1,97 +1,128 @@
 # Discursos presidenciales: búsqueda semántica con reranker local
 
-Corpus segmentado de discursos presidenciales, embeddings BGE-M3 y una aplicación
-Streamlit (`app_reranker/`) que busca pasajes con cuatro *carrier sentences* y
-los reordena con el reranker `BAAI/bge-reranker-v2-m3`, todo en CPU y sin conexión
-una vez descargados los modelos.
+Aplicación para buscar pasajes de discursos presidenciales de Argentina y Chile
+mediante cuatro *carrier sentences*. Utiliza embeddings BGE-M3 y un reranker
+local, funciona en CPU y no necesita internet después de descargar los datos y
+los modelos.
 
-## Contenido
+## Instalación en Windows
 
-| Ruta | Qué es |
-|---|---|
-| `df-chunks-2026-09-10.csv` | Corpus segmentado: 87.546 fragmentos (42 MB). |
-| `salida-embeddings-bge-m3/` | Manifiesto, metadatos por fragmento y reporte de los embeddings. |
-| `salida-embeddings-bge-m3/embeddings-chunks-bge-m3.npy` | Matriz 87.546 × 1024 (359 MB). **No está en el repositorio: se descarga de la Release** (ver abajo). |
-| `segmentar_corpus_colab.py`, `generar_embeddings_bge_m3_colab.py`, `contar_tokens_por_discurso_bge_m3.py` | Pipeline de segmentación, embeddings y conteo de tokens (pensado para Colab). Ver `FLUJO_EMBEDDINGS_BGE_M3.md`. |
-| `app_reranker/` | La aplicación, sus tests y sus reportes de verificación. Detalles técnicos en `app_reranker/README.md`. |
-| `verificar_datos.py` | Comprueba los SHA256 del corpus y de la matriz. |
+Requisitos: [Git](https://git-scm.com/download/win), Python **3.12 de 64 bits**,
+aproximadamente **10 GB libres** y **8 GB de RAM** (16 GB recomendados).
+La inferencia en CPU puede tardar varios minutos según el equipo y los textos.
 
-La app importa `generar_embeddings_bge_m3_colab.py` y lee `salida-embeddings-bge-m3/`
-desde la carpeta padre, así que **hay que conservar esta estructura de carpetas**.
+### 1. Clonar y descargar los embeddings
 
-## Instalación (Windows)
-
-Requisitos: [Git](https://git-scm.com/download/win), Python **3.12** de 64 bits, ~6 GB libres (modelos) y ~4 GB de RAM.
-
-### 1. Clonar y descargar la matriz de embeddings
+Desde PowerShell:
 
 ```powershell
 git clone https://github.com/SilGFerreyra/discursos-presidenciales.git
 cd discursos-presidenciales
-```
-
-Descargue `embeddings-chunks-bge-m3.npy` de la Release
-[`datos-v1`](https://github.com/SilGFerreyra/discursos-presidenciales/releases/tag/datos-v1)
-y guárdelo en `salida-embeddings-bge-m3\`. Desde PowerShell, en la raíz del repositorio:
-
-```powershell
+$ProgressPreference = 'SilentlyContinue'
 Invoke-WebRequest -Uri https://github.com/SilGFerreyra/discursos-presidenciales/releases/download/datos-v1/embeddings-chunks-bge-m3.npy -OutFile salida-embeddings-bge-m3\embeddings-chunks-bge-m3.npy
-```
-
-En Linux/macOS:
-
-```bash
-curl -L -o salida-embeddings-bge-m3/embeddings-chunks-bge-m3.npy https://github.com/SilGFerreyra/discursos-presidenciales/releases/download/datos-v1/embeddings-chunks-bge-m3.npy
-```
-
-Luego verifique los datos:
-
-```powershell
 py -3.12 verificar_datos.py
 ```
 
-Las tres líneas deben decir `OK`.
+Las **dos líneas** del verificador deben decir `OK`. La matriz de 359 MB se
+distribuye en la [release `datos-v1`](https://github.com/SilGFerreyra/discursos-presidenciales/releases/tag/datos-v1);
+los metadatos y el manifiesto ya están incluidos en el repositorio.
+La configuración de progreso evita la lentitud de la barra de descarga en Windows
+PowerShell 5.1; no modifica el archivo descargado.
 
-### 2. Crear el entorno de la app
+### 2. Instalar las dependencias
 
-El lanzador solo acepta el entorno en `app_reranker\.venv`:
+El entorno se crea dentro de `app_reranker/.venv`:
 
 ```powershell
 cd app_reranker
 py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install torch==2.14.1+cpu --index-url https://download.pytorch.org/whl/cpu
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m pip check
 ```
 
-(`requirements-lock.txt` lista las versiones exactas con las que se verificó.)
+### 3. Descargar los modelos
 
-### 3. Descargar los modelos (una sola vez, con internet)
+Ejecute una vez, con internet y antes de abrir la app:
 
 ```powershell
-.\.venv\Scripts\python.exe -B verify_real_runtime.py provision
+.\.venv\Scripts\python.exe -B download_models.py
 ```
 
-Descarga `BAAI/bge-m3` y `BAAI/bge-reranker-v2-m3` en revisiones fijas a
-`app_reranker\.cache\huggingface\` y verifica sus SHA256 (~4,5 GB).
+Descarga `BAAI/bge-m3` y `BAAI/bge-reranker-v2-m3` en revisiones fijas, comprueba
+los tamaños y SHA256 de los pesos y los guarda en `app_reranker/.cache/huggingface/`.
+El comando termina con `"status": "complete"`. Si se interrumpe, puede volver a
+ejecutarlo: Hugging Face reutiliza los archivos completos y reanuda cuando es posible.
 
-### 4. Ejecutar
+El aviso de que falta `hf_xet` no impide la descarga: se utiliza HTTP normal.
+Ese paquete es una optimización opcional.
+
+### 4. Iniciar la app
 
 ```powershell
 .\ejecutar_app.bat
 ```
 
-Abre la app en `http://localhost:8502` (o el siguiente puerto libre). La app funciona
-sin conexión y nunca descarga modelos por su cuenta.
+Abra la dirección que imprime el lanzador: `http://localhost:8502`, o el siguiente
+puerto disponible. Mantenga abierta la consola y use `Ctrl+C` para detenerla.
+La app carga los modelos al analizar una consulta o aplicar el reranker;
+no los descarga por su cuenta.
 
-## Otros sistemas (Linux/macOS)
+## Uso
 
-`ejecutar_app.bat` y `launch.py` están escritos para Windows. En otros sistemas, con el
-entorno creado en `app_reranker/.venv` y los modelos descargados, se puede iniciar
-Streamlit directamente desde `app_reranker/`:
+1. Complete cuatro frases que expresen el mismo concepto y pulse **Analizar cuatro carriers**.
+2. Ajuste los filtros históricos y el número de resultados.
+3. Si desea reordenar los candidatos, active el reranker y pulse **Aplicar reranker**.
+4. Examine los pasajes y descargue los resultados en CSV, JSON o TXT.
+
+Los valores iniciales son **K=10 resultados** y **N=25 candidatos**. El reranker
+evalúa cuatro pares por candidato; aumentar N incrementa el trabajo de la CPU.
+
+- [Guía para redactar carrier sentences](docs/carriers.md).
+- [Corpus, modelos y metodología](docs/embeddings.md).
+- [Estructura técnica y tests](app_reranker/README.md).
+
+## Linux y macOS
+
+Después de clonar el repositorio, descargue y compruebe la matriz:
+
+```bash
+curl -fL -o salida-embeddings-bge-m3/embeddings-chunks-bge-m3.npy https://github.com/SilGFerreyra/discursos-presidenciales/releases/download/datos-v1/embeddings-chunks-bge-m3.npy
+python3.12 verificar_datos.py
+cd app_reranker
+python3.12 -m venv .venv
+```
+
+En **Linux**, instale primero PyTorch CPU:
 
 ```bash
 .venv/bin/python -m pip install torch==2.14.1+cpu --index-url https://download.pytorch.org/whl/cpu
-.venv/bin/python -m pip install -r requirements.txt
-.venv/bin/python -B verify_real_runtime.py provision
-.venv/bin/python -B -m streamlit run streamlit_app.py --server.address 127.0.0.1
 ```
+
+En **macOS**, PyTorch se instala desde PyPI con el resto de las dependencias.
+Luego, en ambos sistemas:
+
+```bash
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python -m pip check
+.venv/bin/python -B download_models.py
+.venv/bin/python -B launch.py
+```
+
+La verificación de despliegue de este proyecto se realiza en Windows; los pasos
+para otros sistemas requieren Python 3.12 y disponibilidad de los paquetes fijados.
+
+## Solución de problemas
+
+- **Falta la matriz o no coincide el SHA256:** vuelva a descargarla de la release
+  y ejecute `verificar_datos.py`. Conserve el nombre y la carpeta indicados.
+- **Faltan modelos locales:** cierre la app, ejecute `download_models.py` y espere
+  a que termine correctamente antes de reiniciarla.
+- **El entorno está incompleto:** desde `app_reranker`, ejecute
+  `.\.venv\Scripts\python.exe -B launch.py --check` para comprobar el intérprete y
+  las dependencias. El lanzador nunca instala paquetes automáticamente.
+- **Memoria insuficiente o inferencia lenta:** reduzca N y el lote del reranker;
+  mantenga los valores iniciales para la primera prueba.
+
+Los modelos, entornos, archivos temporales y la matriz descargada están excluidos
+de Git. No copie `.venv` de otra instalación: créelo con los comandos anteriores.

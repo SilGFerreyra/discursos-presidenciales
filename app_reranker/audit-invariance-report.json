@@ -1,9 +1,0 @@
-{
-  "unchanged": true,
-  "protected_entries": 42643,
-  "changes": {},
-  "baseline_sha256": "9c79e1c9bacf6e563536f95f3dbb953f18b468f849be6180f12bb0330c519236",
-  "hashed_entries": 27,
-  "statement": "No changes detected by inventory",
-  "scope": "parent tree excluding app_reranker; file/dir size+mtime; selected source/config hashes; old venv metadata; not an all-byte proof"
-}

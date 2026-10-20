@@ -1,7 +1,4 @@
-"""Independent source-derived copy of ../app/search_logic.py, with candidate ranking.
-
-Only the canonical embedding helper and corpus are shared read-only inputs.
-"""
+"""Validated corpus loading, carrier embeddings, ranking and exports."""
 from __future__ import annotations
 
 import hashlib
@@ -17,10 +14,7 @@ sys.dont_write_bytecode = True
 import numpy as np
 import pandas as pd
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.append(str(PROJECT_ROOT))
-from generar_embeddings_bge_m3_colab import (
+from embedding_logic import (
     EMBEDDING_DIM, EXPECTED_INPUT_ROWS, EXPECTED_INPUT_SHA256,
     MAX_LENGTH, MODEL_ID, MODEL_REVISION, config_fingerprint, encode_batch,
 )

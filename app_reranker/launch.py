@@ -57,7 +57,7 @@ def main():
         import adjustText
     except (ImportError, OSError) as error:
         raise RuntimeError("El entorno nuevo está incompleto. No se modifica ni se instala automáticamente.") from error
-    if not torch.__version__.endswith("+cpu"):
+    if torch.version.cuda is not None or getattr(torch.version, "hip", None) is not None:
         raise RuntimeError("El entorno aprobado requiere Torch para CPU.")
     if args.check:
         print(json.dumps({"venv": str(root), "python": sys.executable, "prefix": sys.prefix,

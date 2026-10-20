@@ -5,28 +5,13 @@ import tempfile
 from pathlib import Path
 
 APP_ROOT = Path(__file__).resolve().parent
-LOCAL_ENV_ROOT = Path(r"C:\Users\Usuario\AppData\Local\app-reranker")
-
-
-def approved_venv_root(value):
-    """Only the two app-owned roots are allowed; reject redirected roots."""
-    root = Path(os.path.abspath(value))
-    allowed = (LOCAL_ENV_ROOT / ".venv", APP_ROOT / ".venv")
-    if root not in allowed:
-        raise RuntimeError("La ruta del entorno no es una ubicación propia autorizada de app_reranker.")
-    boundary = LOCAL_ENV_ROOT if root == allowed[0] else APP_ROOT
-    for path in (root, boundary):
-        if path.is_symlink() or path.is_junction():
-            raise RuntimeError("El entorno propio no puede ser un enlace a otro entorno.")
-    return root
 
 
 def get_venv_root():
-    configured = os.environ.get("APP_RERANKER_VENV")
-    if not configured:
-        config_file = APP_ROOT / "venv-path.txt"
-        configured = config_file.read_text(encoding="utf-8").strip() if config_file.exists() else str(APP_ROOT / ".venv")
-    return approved_venv_root(configured)
+    root = APP_ROOT / ".venv"
+    if root.is_symlink() or root.is_junction():
+        raise RuntimeError("El entorno propio no puede ser un enlace a otro entorno.")
+    return root
 
 
 def configure_network_mode(offline=True):
@@ -42,7 +27,7 @@ def configure_network_mode(offline=True):
         module = sys.modules.get(module_name)
         if module is not None and hasattr(module, attribute):
             if bool(getattr(module, attribute)) != offline:
-                raise RuntimeError("El modo de red fue fijado al importar las bibliotecas. Reinicie en un proceso nuevo; use provision por separado.")
+                raise RuntimeError("El modo de red fue fijado al importar las bibliotecas. Reinicie en un proceso nuevo; ejecute download_models.py por separado.")
     value = "1" if offline else "0"
     os.environ["HF_HUB_OFFLINE"] = value
     os.environ["TRANSFORMERS_OFFLINE"] = value

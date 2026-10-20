@@ -11,7 +11,7 @@ import streamlit as st
 import torch
 
 from search_logic import ArtifactBundle, MODEL_ID, MODEL_REVISION, load_artifacts
-from generar_embeddings_bge_m3_colab import load_model
+from embedding_logic import load_model
 from rerank_logic import RerankConfig, load_reranker
 
 PLOT_LOCK = RLock()
@@ -47,7 +47,7 @@ def _reranker_cached(config: RerankConfig):
 def _require_offline(local_files_only):
     # Validate outside cache wrappers: underscore arguments are excluded from cache keys.
     if local_files_only is not True:
-        raise ValueError("La aplicación solo carga modelos locales. Ejecute provision en un proceso separado.")
+        raise ValueError("La aplicación solo carga modelos locales. Ejecute download_models.py por separado.")
     configure_runtime(offline=True)
 
 

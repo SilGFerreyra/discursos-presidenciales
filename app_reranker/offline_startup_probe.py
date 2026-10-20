@@ -1,8 +1,4 @@
-"""Fresh-process offline regression probe; fake weights unless --real-model is explicit.
-
-No server or reranker inference is started. --real-tokenizer reads only cached
-tokenizer files; --real-model is reserved for the next focused verifier.
-"""
+"""Fresh-process offline regression probe; real query inference is opt-in."""
 import argparse
 import builtins
 import json
@@ -87,7 +83,7 @@ def main():
                 raise AssertionError("Late offline bootstrap must fail closed")
             assert not constants.HF_HUB_OFFLINE and not is_offline_mode()
         elif args.entry == "provision":
-            import verify_real_runtime
+            import download_models
             def inspect_provision_mode():
                 import transformers
                 from huggingface_hub import constants
@@ -95,9 +91,12 @@ def main():
                 assert not constants.HF_HUB_OFFLINE and not is_offline_mode()
                 assert os.environ["DISABLE_SAFETENSORS_CONVERSION"] == "true"
                 report["explicit_online_provision_bootstrap"] = True
-            stack.enter_context(patch.object(sys, "argv", ["verify_real_runtime.py", "provision"]))
-            stack.enter_context(patch.object(verify_real_runtime, "provision", side_effect=inspect_provision_mode))
-            verify_real_runtime.main()
+            def inspect_online_bootstrap():
+                configure_runtime(offline=False)
+                inspect_provision_mode()
+            stack.enter_context(patch.object(sys, "argv", ["download_models.py"]))
+            stack.enter_context(patch.object(download_models, "provision", side_effect=inspect_online_bootstrap))
+            download_models.main()
         else:
             if args.entry == "launcher":
                 import launch
@@ -133,9 +132,12 @@ def main():
             resource = app_resources.load_query_model_cached(MODEL_ID, MODEL_REVISION, "cpu", "fp32", MAX_LENGTH)
             if args.real_model:
                 import torch
-                from benchmark_reranker import DEFAULT_CARRIERS
+                carriers = ["La educación pública permite aprender y ampliar conocimientos.",
+                            "Las escuelas brindan enseñanza a toda la población.",
+                            "La formación de docentes mejora el aprendizaje.",
+                            "El acceso a la enseñanza favorece el desarrollo social."]
                 with resource.lock:
-                    encoded = embed_carriers(DEFAULT_CARRIERS, resource.tokenizer, resource.model, torch.device("cpu"), MAX_LENGTH)
+                    encoded = embed_carriers(carriers, resource.tokenizer, resource.model, torch.device("cpu"), MAX_LENGTH)
                 assert encoded.vectors.shape == (4, 1024)
                 report["carrier_inference_executed"] = True
                 report["carrier_flags"] = encoded.flags.tolist()
@@ -156,7 +158,7 @@ def main():
     if args.output:
         output = args.output.resolve()
         if not output.is_relative_to(APP_ROOT):
-            raise ValueError("Probe output must stay under NEWAPP")
+            raise ValueError("Probe output must stay under app_reranker")
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print("OFFLINE_PROBE=" + json.dumps(report))

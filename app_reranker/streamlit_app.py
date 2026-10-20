@@ -1,4 +1,4 @@
-"""Independent source-derived UI from ../app/streamlit_app.py, with explicit reranking."""
+"""Semantic search over presidential speeches with explicit local reranking."""
 from __future__ import annotations
 
 from runtime import configure_runtime
@@ -94,7 +94,7 @@ def render_sidebar(bundle):
         candidate_n = st.number_input("Candidatos por coseno (N)", min_value=1, max_value=MAX_CANDIDATES,
                                      step=5, key="candidate_n", help="N debe ser mayor o igual que K. Se evaluarán 4 × N pares. No se ajusta automáticamente un N manual.")
         offline = True
-        st.caption("Aplicación sin conexión desde el inicio. Los modelos se cargan solo al analizar o aplicar. Para descargar modelos, ejecute verify_real_runtime.py provision en un proceso separado antes de abrir la aplicación.")
+        st.caption("Aplicación sin conexión desde el inicio. Los modelos se cargan solo al analizar o aplicar. Para descargarlos, ejecute download_models.py antes de abrir la aplicación.")
         with st.expander("Configuración del reranker"):
             batch_size = st.selectbox("Pares por lote", [4, 1, 2, 8], key="batch_size")
             max_length = st.selectbox("Tokens por par completo", [512, 256, 128], key="max_length")
