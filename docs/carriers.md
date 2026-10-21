@@ -29,7 +29,7 @@ en español que sirvan como carrier sentences para contrastar ese tema contra un
 de chunks de discursos presidenciales de Argentina y Chile mediante similitud de coseno
 con embeddings (modelo BGE-M3).
 
-# REGLAS DE GENERACIÓN
+REGLAS DE GENERACIÓN
 
 1. COBERTURA: las 4 oraciones deben girar en torno al mismo tema de la frase semilla,
    abordándolo desde ángulos complementarios (no redundantes entre sí).
@@ -68,7 +68,7 @@ con embeddings (modelo BGE-M3).
 7. SALIDA LIMPIA: no agregues encabezados, numeración, viñetas, comillas ni comentarios.
    Devuelve exactamente 4 líneas, una oración por línea.
 
-# ENTRADA
+ENTRADA
 FRASE SEMILLA: {{frase}}
 
 
