@@ -15,29 +15,63 @@ independientes ni como una lista de palabras clave.
 - Revise los resultados: cercanía semántica no equivale automáticamente a una
   clasificación histórica correcta.
 
-## Ejemplo: educación pública
+## Ejemplo: denuncia de corrupción judicial
 
-1. El acceso de toda la población a una enseñanza pública de calidad permite
-   ampliar los conocimientos y reducir las desigualdades sociales.
-2. La creación y el sostenimiento de escuelas favorecen la formación de las
-   personas y ofrecen oportunidades de aprendizaje a distintos sectores sociales.
-3. La preparación de docentes y la mejora de los establecimientos educativos
-   fortalecen la enseñanza y contribuyen al desarrollo de la comunidad.
-4. Las políticas que promueven la alfabetización y la formación de la ciudadanía
-   buscan extender los beneficios de la educación al conjunto de la población.
+1. La corrupción en el poder judicial se manifiesta cuando los jueces resuelven en función de sobornos, prebendas o intereses ajenos al derecho, traicionando el mandato de imparcialidad que la sociedad les confía
+2. La venalidad de ciertos magistrados y la prevaricación en sus fallos erosionan la confianza ciudadana y convierten la administración de justicia en un mercado de favores y privilegios.
+3. El clientelismo, el nepotismo y el tráfico de influencias en la designación y promoción de los cargos judiciales configuran un entramado que subordina la carrera judicial a lealtades políticas y a intereses particulares
+4. Las irregularidades en la tramitación de causas, la arbitrariedad en las decisiones y la impunidad de los responsables profundizan el descrédito de los tribunales y debilitan el estado de derecho.
 
-## Prompt reutilizable
+## Prompt que se utilizó para la investigación sobre corrupción
 
-```text
-Genera exactamente cuatro oraciones en español para buscar el siguiente concepto
-en discursos políticos mediante embeddings semánticos:
+Dado un TEMA o FRASE SEMILLA sobre discurso político, genera EXACTAMENTE 4 oraciones
+en español que sirvan como carrier sentences para contrastar ese tema contra un corpus
+de chunks de discursos presidenciales de Argentina y Chile mediante similitud de coseno
+con embeddings (modelo BGE-M3).
 
-CONCEPTO: [escriba aquí el concepto]
+# REGLAS DE GENERACIÓN
 
-Las cuatro oraciones deben expresar el mismo concepto desde perspectivas
-complementarias, con vocabulario diverso y sin nombres propios ni referencias
-a un país o gobierno particular. Deben ser autocontenidas y tener entre 25 y 55
-palabras cada una. Devuelve solo cuatro líneas, una oración por línea.
+1. COBERTURA: las 4 oraciones deben girar en torno al mismo tema de la frase semilla,
+   abordándolo desde ángulos complementarios (no redundantes entre sí).
+
+2. DIVERSIDAD LÉXICA: cada oración debe reformular el tema con vocabulario distinto.
+   No repitas el mismo sustantivo nuclear ni la misma construcción más de una vez.
+
+3. REGLA DEL CONCEPTO EXPLÍCITO:
+   - Si la frase semilla contiene "corrupción", "transparencia" o cualquier término
+     equivalente del diccionario de variaciones, SOLO UNA de las 4 oraciones puede
+     usar ese término explícito (o su familia morfológica).
+   - Las otras 3 oraciones deben expresar la misma idea mediante sinónimos,
+     perífrasis o variantes del diccionario.
+   - Si la frase semilla NO contiene ninguno de esos términos, aplica la misma lógica
+     al concepto nuclear que sí aparezca: solo una oración lo nombrará explícitamente.
+
+4. DICCIONARIO DE VARIACIONES (usar preferentemente estos patrones para reformular):
+   corromp*, arbitrariedad, agiotaje, asociacion ilicita, camarilla, caudillismo,
+   clientelismo, cohech*, comision investigadora, concusion*, *corrup*, dadivas,
+   defraudacion, demagog*, despotismo*, dilapida*, empleomania, enriquecimiento ilicito,
+   exaccion*, favoritismo, fraud*, irregularidades, malversa*, nepotismo, peculado,
+   prebenda, prevarica*, soborn*, trafico influencias, venalidad, vicio*
+
+5. NEUTRALIDAD REFERENCIAL (crítico para el experimento):
+   - NO incluyas nombres propios de personas, países, ciudades, regiones, partidos
+     políticos, instituciones específicas ni cargos concretos.
+   - NO uses deícticos situados ("en nuestro país", "en la región", "este gobierno").
+   - Usa sujetos genéricos: "el Estado", "los gobiernos", "las instituciones",
+     "los empresarios", "las corporaciones", "los funcionarios", "el poder político",
+     "el poder económico", etc., según corresponda al tema.
+
+6. REGISTRO Y LONGITUD:
+   - Registro institucional/argumentativo, autocontenido (sin dependencia de contexto).
+   - Longitud comparable a chunks de 40-70 tokens (aprox. 25-55 palabras por oración).
+
+7. SALIDA LIMPIA: no agregues encabezados, numeración, viñetas, comillas ni comentarios.
+   Devuelve exactamente 4 líneas, una oración por línea.
+
+# ENTRADA
+FRASE SEMILLA: {{frase}}
+
+
 ```
 
 Después de revisar las frases, introdúzcalas en la app y pulse **Analizar cuatro
