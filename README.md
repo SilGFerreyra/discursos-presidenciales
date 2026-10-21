@@ -112,17 +112,6 @@ Luego, en ambos sistemas:
 La verificación de despliegue de este proyecto se realiza en Windows; los pasos
 para otros sistemas requieren Python 3.12 y disponibilidad de los paquetes fijados.
 
-## Solución de problemas
-
-- **Falta la matriz o no coincide el SHA256:** vuelva a descargarla de la release
-  y ejecute `verificar_datos.py`. Conserve el nombre y la carpeta indicados.
-- **Faltan modelos locales:** cierre la app, ejecute `download_models.py` y espere
-  a que termine correctamente antes de reiniciarla.
-- **El entorno está incompleto:** desde `app_reranker`, ejecute
-  `.\.venv\Scripts\python.exe -B launch.py --check` para comprobar el intérprete y
-  las dependencias. El lanzador nunca instala paquetes automáticamente.
-- **Memoria insuficiente o inferencia lenta:** reduzca N y el lote del reranker;
-  mantenga los valores iniciales para la primera prueba.
 
 Los modelos, entornos, archivos temporales y la matriz descargada están excluidos
 de Git. No copie `.venv` de otra instalación: créelo con los comandos anteriores.
